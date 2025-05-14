@@ -1,10 +1,12 @@
 
 import React, { useEffect } from 'react';
 import { ViewportManager, initConsole } from './utils/viewport';
-import { Messenger } from './utils/messenger';
+import { useMessenger } from './hooks/useMessenger';
 import './App.css';
 
 function App() {
+  const { sendMessage } = useMessenger();
+
   useEffect(() => {
     // Initialize console if needed
     initConsole();
@@ -12,14 +14,25 @@ function App() {
     // Initialize viewport manager
     ViewportManager.init();
     
-    // Initialize messenger
-    Messenger.init();
-    
     // Load game resources
-    const script = document.createElement('script');
-    script.src = `resources/resources.nocache.js?v=${new Date().getTime()}`;
-    document.body.appendChild(script);
-  }, []);
+    const loadGameResources = () => {
+      const script = document.createElement('script');
+      script.src = `resources/resources.nocache.js?v=${new Date().getTime()}`;
+      document.body.appendChild(script);
+    };
+
+    loadGameResources();
+
+    // Example messenger usage
+    const handleGameMessage = {
+      done: (response) => {
+        console.log('Game response:', response);
+      }
+    };
+
+    // Test messenger
+    sendMessage('init', handleGameMessage);
+  }, [sendMessage]);
 
   return (
     <div className="game-container">
