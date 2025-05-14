@@ -1,13 +1,12 @@
 
+import { useEffect } from 'react';
 import UAParser from './uaparser';
 
 const SCREEN_WIDTH = 1920;
 const SCREEN_HEIGHT = 1080;
 
-export const ViewportManager = {
-  init() {
-    if (typeof window === 'undefined') return;
-
+export const useViewport = () => {
+  useEffect(() => {
     const calculateScaleFactor = () => {
       const width = window.innerWidth;
       const height = window.innerHeight;
@@ -20,12 +19,19 @@ export const ViewportManager = {
       return 1.0;
     };
 
-    const scaleFactor = calculateScaleFactor();
-    const viewport = document.createElement('meta');
-    viewport.setAttribute('name', 'viewport');
-    viewport.setAttribute('content', `width=device-width, initial-scale=${scaleFactor}, user-scalable=no`);
-    document.head.appendChild(viewport);
-  }
+    const setViewport = () => {
+      const scaleFactor = calculateScaleFactor();
+      const viewport = document.createElement('meta');
+      viewport.setAttribute('name', 'viewport');
+      viewport.setAttribute('content', `width=device-width, initial-scale=${scaleFactor}, user-scalable=no`);
+      document.head.appendChild(viewport);
+    };
+
+    setViewport();
+
+    window.addEventListener('resize', setViewport);
+    return () => window.removeEventListener('resize', setViewport);
+  }, []);
 };
 
 export const initConsole = () => {
@@ -33,7 +39,7 @@ export const initConsole = () => {
     const noop = () => {};
     console = {
       log: noop,
-      debug: noop, 
+      debug: noop,
       info: noop,
       error: noop,
       trace: noop,

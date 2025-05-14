@@ -1,4 +1,5 @@
-import { useCallback } from 'react';
+
+import { useCallback, useEffect } from 'react';
 
 export const useMessenger = () => {
   const MESSENGER_VAR = 'MESSENGER';
@@ -12,7 +13,7 @@ export const useMessenger = () => {
           const response = {
             classifier: 'IError',
             code: -1,
-            message: `${MESSENGER_VAR}.request() not yet initialized`
+            message: `${MESSENGER_VAR}.request() not initialized`
           };
           console.error(response.message);
           callback.done(JSON.stringify(response));
@@ -28,8 +29,16 @@ export const useMessenger = () => {
     }
   }, []);
 
+  useEffect(() => {
+    initMessenger();
+    return () => {
+      if (window[MESSENGER_VAR]) {
+        delete window[MESSENGER_VAR];
+      }
+    };
+  }, [initMessenger]);
+
   return {
-    initMessenger,
     sendMessage
   };
 };
