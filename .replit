@@ -5,4 +5,17 @@ run = "echo \"\""
 channel = "stable-24_05"
 
 [deployment]
-run = ["sh", "-c", "echo \"\""]
+run = ["sh", "-c", "npm run preview"]
+build = ["sh", "-c", "npm run build"]
+
+[workflows]
+runButton = "dev"
+
+[[workflows.workflow]]
+name = "dev"
+author = 39954127
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run dev"
