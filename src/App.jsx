@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { ViewportManager, initConsole } from './utils/viewport';
 import { useMessenger } from './hooks/useMessenger';
@@ -10,10 +9,10 @@ function App() {
   useEffect(() => {
     // Initialize console if needed
     initConsole();
-    
+
     // Initialize viewport manager
     ViewportManager.init();
-    
+
     // Load game resources
     const loadGameResources = () => {
       const script = document.createElement('script');

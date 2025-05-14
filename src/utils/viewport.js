@@ -1,4 +1,3 @@
-
 import UAParser from './uaparser';
 
 const SCREEN_WIDTH = 1920;
@@ -7,19 +6,19 @@ const SCREEN_HEIGHT = 1080;
 export const ViewportManager = {
   init() {
     if (typeof window === 'undefined') return;
-    
+
     const calculateScaleFactor = () => {
       const width = window.innerWidth;
       const height = window.innerHeight;
       const parser = new UAParser();
       const browser = parser.getBrowser();
       const device = parser.getDevice();
-      
+
       // Handle high resolution screens differently
       if (device.type === 'mobile' || device.type === 'tablet') {
         return Math.min(width / SCREEN_WIDTH, height / SCREEN_HEIGHT);
       }
-      
+
       return 1.0; // Desktop default scale
     };
 
